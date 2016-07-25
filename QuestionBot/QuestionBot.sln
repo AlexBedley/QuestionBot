@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuestionBot", "QuestionBot\QuestionBot.csproj", "{99BE1564-5E74-43D1-A92F-0AA6B3FF58FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuestionBot.UnitTests", "QuestionBot.UnitTests\QuestionBot.UnitTests.csproj", "{A3EB52A5-6299-4F78-9CF8-CD5135D955F6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{99BE1564-5E74-43D1-A92F-0AA6B3FF58FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99BE1564-5E74-43D1-A92F-0AA6B3FF58FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99BE1564-5E74-43D1-A92F-0AA6B3FF58FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99BE1564-5E74-43D1-A92F-0AA6B3FF58FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3EB52A5-6299-4F78-9CF8-CD5135D955F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3EB52A5-6299-4F78-9CF8-CD5135D955F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3EB52A5-6299-4F78-9CF8-CD5135D955F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3EB52A5-6299-4F78-9CF8-CD5135D955F6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
