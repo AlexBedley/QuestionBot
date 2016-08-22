@@ -6,7 +6,7 @@ namespace QuestionBot.Model {
 
     public class InMemoryStore : IStore {
         private IList<IRecord> allRecords = new List<IRecord>();
-        private int _questionId = 0;
+        private static int _questionId = 0;
 
         public IRecord CreateRecord(string question)
         {

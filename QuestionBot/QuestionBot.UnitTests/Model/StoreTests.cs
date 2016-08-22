@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using System.Collections.Generic;
 using QuestionBot.Model;
@@ -21,8 +22,8 @@ namespace QuestionBot.UnitTests.Model {
             string question = "What is 1+2?";
             IRecord questionRecord = _storeTest.CreateRecord(question);
             Assert.AreEqual(questionRecord.Question, question);
-            Assert.IsNotNull(questionRecord.TimeAsked);
-            Assert.IsNotNull(questionRecord.ID);
+            Assert.AreNotEqual(questionRecord.TimeAsked, DateTime.MinValue);
+            Assert.AreNotEqual(questionRecord.ID,0);
         }
         [Test]
         public void Updating_question_with_answer_updates_the_record()
@@ -30,24 +31,41 @@ namespace QuestionBot.UnitTests.Model {
             string question = "What is 2+3?";
             string answer = "5";
 
-            IRecord answeredRecord = _storeTest.CreateRecord(question);
-            _storeTest.UpdateRecord(answeredRecord.ID, answer);
-            Assert.AreEqual(answeredRecord.Question, question);
-            Assert.AreEqual(answeredRecord.Answer, answer);
-            Assert.IsNotNull(answeredRecord.ID);
-            Assert.IsNotNull(answeredRecord.TimeAsked);
-            Assert.IsNotNull(answeredRecord.TimeAnswered);
+            IRecord questionRecord = _storeTest.CreateRecord(question);
+            IRecord answeredRecord = _storeTest.UpdateRecord(questionRecord.ID, answer);
+
+            Assert.AreEqual(answeredRecord.Question, questionRecord.Question);
+            Assert.AreEqual(answeredRecord.Answer, questionRecord.Answer);
+            Assert.AreEqual(answeredRecord.ID, questionRecord.ID);
+            Assert.AreEqual(answeredRecord.TimeAsked, questionRecord.TimeAsked);
+            Assert.AreEqual(answeredRecord.TimeAnswered, questionRecord.TimeAnswered);
         }
         [Test]
         public void GetRecords_returns_all_question_records()
         {
             string question1 = "What is 1+2";
             string question2 = "What is 2+3?";
-            _storeTest.CreateRecord(question1);
-            _storeTest.CreateRecord(question2);
+            string answer1 = "3";
+            string answer2 = "five";
+            IRecord record1 = _storeTest.CreateRecord(question1);
+            IRecord record2 = _storeTest.CreateRecord(question2);
+
+            _storeTest.UpdateRecord(record1.ID, answer1);
+            _storeTest.UpdateRecord(record2.ID, answer2);
+
             _retreivedRecords = _storeTest.GetRecords();
-            Assert.AreEqual(_retreivedRecords.ElementAt(0).Question, question1);
-            Assert.AreEqual(_retreivedRecords.ElementAt(1).Question, question2);
+
+            Assert.AreEqual(_retreivedRecords.ElementAt(0).ID, record1.ID);
+            Assert.AreEqual(_retreivedRecords.ElementAt(0).Question, record1.Question);
+            Assert.AreEqual(_retreivedRecords.ElementAt(0).Answer, record1.Answer);
+            Assert.AreEqual(_retreivedRecords.ElementAt(0).TimeAsked, record1.TimeAsked);
+            Assert.AreEqual(_retreivedRecords.ElementAt(0).TimeAnswered, record1.TimeAnswered);
+
+            Assert.AreEqual(_retreivedRecords.ElementAt(1).ID, record2.ID);
+            Assert.AreEqual(_retreivedRecords.ElementAt(1).Question, record2.Question);
+            Assert.AreEqual(_retreivedRecords.ElementAt(1).Answer, record2.Answer);
+            Assert.AreEqual(_retreivedRecords.ElementAt(1).TimeAsked, record2.TimeAsked);
+            Assert.AreEqual(_retreivedRecords.ElementAt(1).TimeAnswered, record2.TimeAnswered);
         }
         [Test]
         public void GetRecords_returns_empty_list_if_there_are_no_records()
