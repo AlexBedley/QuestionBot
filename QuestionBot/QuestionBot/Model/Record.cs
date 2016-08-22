@@ -11,9 +11,9 @@ namespace QuestionBot.Model {
 
         public Record(int id, string qstn, DateTime qstnTime)
         {
+            ID = id;
             Question = qstn;
             TimeAsked = qstnTime;
-            ID = id;
         }
     }
 }
