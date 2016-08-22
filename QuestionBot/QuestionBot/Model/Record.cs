@@ -9,8 +9,7 @@ namespace QuestionBot.Model {
         public DateTime TimeAsked { get; set; }
         public DateTime TimeAnswered { get; set; }
 
-        public Record(int id, string qstn, DateTime qstnTime)
-        {
+        public Record(int id, string qstn, DateTime qstnTime){
             ID = id;
             Question = qstn;
             TimeAsked = qstnTime;
