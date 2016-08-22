@@ -9,7 +9,7 @@ namespace QuestionBot.UnitTests.Model {
     [TestFixture]
     public class InMemoryStoreTests{
         private IStore _storeTest;
-        private IEnumerable<IRecord> _retreivedRecords = new List<IRecord>();
+        private IEnumerable<IRecord> _retrievedRecords = new List<IRecord>();
 
         [SetUp]
         public void Setup(){
@@ -55,26 +55,28 @@ namespace QuestionBot.UnitTests.Model {
             _storeTest.UpdateRecord(record1.ID, answer1);
             _storeTest.UpdateRecord(record2.ID, answer2);
 
-            _retreivedRecords = _storeTest.GetRecords();
+            _retrievedRecords = _storeTest.GetRecords();
+            IRecord firstRecord = _retrievedRecords.ElementAt(0);
+            IRecord secondRecord = _retrievedRecords.ElementAt(1);
 
-            Assert.AreEqual(_retreivedRecords.ElementAt(0).ID, record1.ID);
-            Assert.AreEqual(_retreivedRecords.ElementAt(0).Question, record1.Question);
-            Assert.AreEqual(_retreivedRecords.ElementAt(0).Answer, record1.Answer);
-            Assert.AreEqual(_retreivedRecords.ElementAt(0).TimeAsked, record1.TimeAsked);
-            Assert.AreEqual(_retreivedRecords.ElementAt(0).TimeAnswered, record1.TimeAnswered);
+            Assert.AreEqual(firstRecord.ID, record1.ID);
+            Assert.AreEqual(firstRecord.Question, record1.Question);
+            Assert.AreEqual(firstRecord.Answer, record1.Answer);
+            Assert.AreEqual(firstRecord.TimeAsked, record1.TimeAsked);
+            Assert.AreEqual(firstRecord.TimeAnswered, record1.TimeAnswered);
 
-            Assert.AreEqual(_retreivedRecords.ElementAt(1).ID, record2.ID);
-            Assert.AreEqual(_retreivedRecords.ElementAt(1).Question, record2.Question);
-            Assert.AreEqual(_retreivedRecords.ElementAt(1).Answer, record2.Answer);
-            Assert.AreEqual(_retreivedRecords.ElementAt(1).TimeAsked, record2.TimeAsked);
-            Assert.AreEqual(_retreivedRecords.ElementAt(1).TimeAnswered, record2.TimeAnswered);
+            Assert.AreEqual(secondRecord.ID, record2.ID);
+            Assert.AreEqual(secondRecord.Question, record2.Question);
+            Assert.AreEqual(secondRecord.Answer, record2.Answer);
+            Assert.AreEqual(secondRecord.TimeAsked, record2.TimeAsked);
+            Assert.AreEqual(secondRecord.TimeAnswered, record2.TimeAnswered);
         }
 
         [Test]
         public void GetRecords_returns_empty_list_if_there_are_no_records(){
-            _retreivedRecords = _storeTest.GetRecords();
+            _retrievedRecords = _storeTest.GetRecords();
 
-            Assert.That(_retreivedRecords, Is.EqualTo(new List<IRecord>()));
+            Assert.That(_retrievedRecords, Is.EqualTo(new List<IRecord>()));
         }
     }
 }
