@@ -32,11 +32,5 @@ namespace QuestionBot.Model {
         {
             return allRecords;
         }
-
-        public void DeleteRecord(int id)
-        {
-
-        }
-
     }
 }
