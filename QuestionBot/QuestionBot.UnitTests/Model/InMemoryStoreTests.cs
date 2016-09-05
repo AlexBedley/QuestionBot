@@ -91,7 +91,7 @@ namespace QuestionBot.UnitTests.Model {
         public void GetRecords_returns_empty_list_if_there_are_no_records(){
             _retrievedRecords = _storeTest.GetRecords();
 
-            Assert.That(_retrievedRecords, Is.EqualTo(new List<IRecord>()));
+            Assert.IsEmpty(_retrievedRecords);
         }
     }
 }
