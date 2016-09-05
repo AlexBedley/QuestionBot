@@ -28,6 +28,21 @@ namespace QuestionBot.UnitTests.Model {
         }
 
         [Test]
+        public void Updating_question_with_answer_stores_my_answer(){
+            string question = "What is 1+2?";
+            string answer = "3";
+
+            IRecord questionRecord = _storeTest.CreateRecord(question);
+            IRecord answeredRecord = _storeTest.UpdateRecord(questionRecord.ID, answer);
+
+            Assert.AreEqual(answeredRecord.Question, question);
+            Assert.AreEqual(answeredRecord.Answer, answer);
+            Assert.AreNotEqual(answeredRecord.TimeAsked, DateTime.MinValue);
+            Assert.AreNotEqual(answeredRecord.TimeAnswered, DateTime.MinValue);
+            Assert.AreNotEqual(answeredRecord.ID,0);
+        }
+
+        [Test]
         public void Updating_question_with_answer_updates_the_record(){
             string question = "What is 2+3?";
             string answer = "5";
