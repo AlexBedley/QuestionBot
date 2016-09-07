@@ -4,7 +4,7 @@ namespace QuestionBot.Model {
 
     public interface IStore {
         IRecord CreateRecord(string question);
-        IRecord UpdateRecord(int id, string answer);
+        bool TryUpdateRecord(int id, string answer);
         IEnumerable<IRecord> GetRecords();
     }
 }

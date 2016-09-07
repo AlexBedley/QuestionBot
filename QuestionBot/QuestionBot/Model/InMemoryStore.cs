@@ -17,13 +17,23 @@ namespace QuestionBot.Model {
             return newQuestion;
         }
 
-        public IRecord UpdateRecord(int id, string answer){
-            IRecord recordToUpdate = allRecords.FirstOrDefault(recordItem => recordItem.ID == id);
+        public bool TryUpdateRecord(int id, string answer){
+            IRecord recordToUpdate;
+            
+            try{
+                recordToUpdate = allRecords.First(recordItem => recordItem.ID == id);
+            }catch (System.InvalidOperationException){
+                return false;
+            }
+
+            if (String.IsNullOrEmpty(answer)){
+                return false;
+            }
 
             recordToUpdate.Answer = answer;
             recordToUpdate.TimeAnswered = DateTime.Now;
 
-            return recordToUpdate;
+            return true;
         }
 
         public IEnumerable<IRecord> GetRecords(){
