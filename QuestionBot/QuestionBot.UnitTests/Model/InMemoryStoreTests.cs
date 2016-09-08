@@ -9,7 +9,6 @@ namespace QuestionBot.UnitTests.Model {
     [TestFixture]
     public class InMemoryStoreTests{
         private IStore _storeTest;
-        private IEnumerable<IRecord> _retrievedRecords;
 
         [SetUp]
         public void Setup(){
@@ -32,11 +31,12 @@ namespace QuestionBot.UnitTests.Model {
             string question = "What is 1+2?";
             string answer = "3";
             IRecord answerRecord;
+            IEnumerable<IRecord> retrievedRecords;
 
             IRecord questionRecord = _storeTest.CreateRecord(question);
             bool updatedRecord = _storeTest.TryUpdateRecord(questionRecord.ID, answer,out answerRecord);
-            _retrievedRecords = _storeTest.GetRecords();
-            IRecord myRecord = _retrievedRecords.ElementAt(0);
+            retrievedRecords = _storeTest.GetRecords();
+            IRecord myRecord = retrievedRecords.ElementAt(0);
 
             Assert.IsTrue(updatedRecord);
             Assert.AreEqual(myRecord.Question, question);
@@ -59,6 +59,7 @@ namespace QuestionBot.UnitTests.Model {
             string answer1 = "3";
             string answer2 = "five";
             IRecord answerRecord;
+            IEnumerable<IRecord> retrievedRecords;
 
             IRecord record1 = _storeTest.CreateRecord(question1);
             IRecord record2 = _storeTest.CreateRecord(question2);
@@ -67,16 +68,17 @@ namespace QuestionBot.UnitTests.Model {
             _storeTest.TryUpdateRecord(record1.ID, answer1, out answerRecord);
             _storeTest.TryUpdateRecord(record2.ID, answer2, out answerRecord);
 
-            _retrievedRecords = _storeTest.GetRecords();
+            retrievedRecords = _storeTest.GetRecords();
 
-            CollectionAssert.AreEqual(questionRecords, _retrievedRecords);
+            CollectionAssert.AreEqual(questionRecords, retrievedRecords);
         }
 
         [Test]
         public void GetRecords_returns_empty_list_if_there_are_no_records(){
-            _retrievedRecords = _storeTest.GetRecords();
+            IEnumerable<IRecord> retrievedRecords;
+            retrievedRecords = _storeTest.GetRecords();
 
-            Assert.IsEmpty(_retrievedRecords);
+            Assert.IsEmpty(retrievedRecords);
         }
 
         [Test]
