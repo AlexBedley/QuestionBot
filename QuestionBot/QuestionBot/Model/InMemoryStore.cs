@@ -17,19 +17,20 @@ namespace QuestionBot.Model {
             return newQuestion;
         }
 
-        public bool TryUpdateRecord(int id, string answer){
-            IRecord recordToUpdate;
-            
-            try{
-                recordToUpdate = allRecords.First(recordItem => recordItem.ID == id);
-            }catch (System.InvalidOperationException){
+        public bool TryUpdateRecord(int id, string answer, out IRecord recordToUpdate){
+            IEnumerable<IRecord> recordMatchingId = allRecords.Where(recordItem => recordItem.ID == id);
+
+            if (recordMatchingId.Count() == 0){
+                recordToUpdate = null;
                 return false;
             }
 
             if (String.IsNullOrEmpty(answer)){
+                recordToUpdate = null;
                 return false;
             }
 
+            recordToUpdate = recordMatchingId.Single();
             recordToUpdate.Answer = answer;
             recordToUpdate.TimeAnswered = DateTime.Now;
 
