@@ -103,11 +103,11 @@ namespace QuestionBot.UnitTests.Model {
         public void Updating_record_with_nonexistant_ID_returns_false(){
             string question1 = "What is 1+2";
             string answer = "3";
-            IRecord x;
+            IRecord unusedRecord;
 
             IRecord myRecord = _storeTest.CreateRecord(question1);
 
-            bool badIdResult = _storeTest.TryUpdateRecord(myRecord.ID + 1, answer,out x);
+            bool badIdResult = _storeTest.TryUpdateRecord(myRecord.ID + 1, answer,out unusedRecord);
 
             Assert.IsFalse(badIdResult);
         }

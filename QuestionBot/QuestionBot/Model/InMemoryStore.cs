@@ -30,7 +30,7 @@ namespace QuestionBot.Model {
                 return false;
             }
 
-            recordToUpdate = recordMatchingId.Single();
+            recordToUpdate = recordMatchingId.First();
             recordToUpdate.Answer = answer;
             recordToUpdate.TimeAnswered = DateTime.Now;
 
