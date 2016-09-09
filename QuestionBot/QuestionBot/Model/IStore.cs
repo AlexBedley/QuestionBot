@@ -3,8 +3,8 @@
 namespace QuestionBot.Model {
 
     public interface IStore {
-        IRecord CreateRecord( string question );
-        IRecord UpdateRecord( int id, string answer );
-        IEnumerable<IRecord> DisplayRecords();
+        IRecord CreateRecord(string question);
+        bool TryUpdateRecord(int id, string answer, out IRecord recordToUpdate);
+        IEnumerable<IRecord> GetRecords();
     }
 }
