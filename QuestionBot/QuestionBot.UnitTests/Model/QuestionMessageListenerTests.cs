@@ -57,8 +57,7 @@ namespace QuestionBot.UnitTests.Model{
         }
 
         [Test]
-        public void Updating_question_with_wrong_id_does_not_update_record()
-        {
+        public void Updating_question_with_wrong_id_does_not_update_record(){
             string question = "/question What is 1+2?";
             IEnumerable<IRecord> recordList;
             IRecord newRecord;
@@ -80,8 +79,7 @@ namespace QuestionBot.UnitTests.Model{
         }
 
         [Test]
-        public void Multi_question_answering_updates_records()
-        {
+        public void Multi_question_answering_updates_records(){
             string question1 = "/question What is 1+2?";
             string question2 = "/question What is 2+3?";
             string strippedAnswer1 = "three";
