@@ -9,18 +9,19 @@ namespace QuestionBot.Model{
     public class QuestionMessageListener : IMessageListener{
 
         private IStore _questionDataStore;
+        private const string QuestionCommand = "/question";
+        private const string AnswerTag = "/answer";
 
         public QuestionMessageListener(IStore store){
             _questionDataStore = store;
         }
 
         public string ReceiveMessage(string message){
-            const string questionCommand = "/question";
-            const string answerTag = "/answer";
+
             string outputMessage;
 
-            if (message.StartsWith(questionCommand)){
-                string questionText = message.Remove(0, questionCommand.Length);
+            if (message.StartsWith(QuestionCommand)){
+                string questionText = message.Remove(0, QuestionCommand.Length);
                 questionText = questionText.TrimStart(' ');
 
                 if (!String.IsNullOrWhiteSpace(questionText)){
@@ -34,9 +35,9 @@ namespace QuestionBot.Model{
 
                 outputMessage = "This question appears to be blank, please retry.";
                 return outputMessage;
-            }else if (message.StartsWith(answerTag)){
+            }else if (message.StartsWith(AnswerTag)){
                 IRecord updatedRecord;
-                KeyValuePair<int,string> idWithAnswer = GetIdWithAnswer(message, answerTag);
+                KeyValuePair<int,string> idWithAnswer = GetIdWithAnswer(message, AnswerTag);
                 
                 if (_questionDataStore.TryUpdateRecord(idWithAnswer.Key, idWithAnswer.Value, out updatedRecord)){
                     outputMessage = "Question ID " +
