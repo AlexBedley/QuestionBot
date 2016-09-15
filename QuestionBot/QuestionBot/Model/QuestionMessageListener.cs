@@ -18,23 +18,24 @@ namespace QuestionBot.Model{
         public string ReceiveMessage(string message){
             string outputMessage;
 
-            if (message.StartsWith(QuestionCommand)){
-                string questionText = message.Remove(0, QuestionCommand.Length);
-                questionText = questionText.TrimStart(' ');
+            if (String.IsNullOrEmpty(message) || !message.StartsWith(QuestionCommand)){
+                return null;
+            }
 
-                if (questionText.Equals(String.Empty)){
-                    outputMessage = "This question appears to be blank, please retry.";
-                    return outputMessage;
-                }
+            string questionText = message.Remove(0, QuestionCommand.Length);
+            questionText = questionText.TrimStart(' ');
 
-                IRecord newQuestion = _questionDataStore.CreateRecord(questionText);
-                outputMessage = "Question has been created with ID " +
-                                newQuestion.Id +
-                                ". Question: " +
-                                newQuestion.Question;
+            if (questionText.Equals(String.Empty)){
+                outputMessage = "This question appears to be blank, please retry.";
                 return outputMessage;
             }
-            return null;
+
+            IRecord newQuestion = _questionDataStore.CreateRecord(questionText);
+            outputMessage = "Question has been created with ID " +
+                            newQuestion.Id +
+                            ". Question: " +
+                            newQuestion.Question;
+            return outputMessage;
         }
     }
 }
