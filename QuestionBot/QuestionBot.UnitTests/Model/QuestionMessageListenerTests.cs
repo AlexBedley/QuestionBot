@@ -36,7 +36,7 @@ namespace QuestionBot.UnitTests.Model{
 
         [Test]
         public void Blank_question_creates_no_record(){
-            string question = "/question ";
+            string question = "/question";
             IEnumerable<IRecord> recordList;
 
             _testListener.ReceiveMessage(question);

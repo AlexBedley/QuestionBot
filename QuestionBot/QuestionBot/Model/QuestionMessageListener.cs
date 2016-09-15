@@ -22,20 +22,19 @@ namespace QuestionBot.Model{
                 string questionText = message.Remove(0, QuestionCommand.Length);
                 questionText = questionText.TrimStart(' ');
 
-                if (!String.IsNullOrWhiteSpace(questionText)){
-                    IRecord newQuestion = _questionDataStore.CreateRecord(questionText);
-                    outputMessage ="Question has been created with ID " + 
-                        newQuestion.Id + 
-                        ". Question: " +
-                        newQuestion.Question;
+                if (questionText.Equals(String.Empty)){
+                    outputMessage = "This question appears to be blank, please retry.";
                     return outputMessage;
                 }
 
-                outputMessage = "This question appears to be blank, please retry.";
+                IRecord newQuestion = _questionDataStore.CreateRecord(questionText);
+                outputMessage = "Question has been created with ID " +
+                                newQuestion.Id +
+                                ". Question: " +
+                                newQuestion.Question;
                 return outputMessage;
             }
             return null;
         }
-
     }
 }
