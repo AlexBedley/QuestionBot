@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 namespace QuestionBot.Model{
 
     public interface IMessageListener{
-        void ReceiveMessage(string message);
+        string ReceiveMessage(string message);
     }
 }

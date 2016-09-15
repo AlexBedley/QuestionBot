@@ -14,39 +14,44 @@ namespace QuestionBot.Model{
             _questionDataStore = store;
         }
 
-        public void ReceiveMessage(string input){
+        public string ReceiveMessage(string message){
             const string questionCommand = "/question";
             const string answerTag = "/answer";
+            string outputMessage;
 
-            if (input.StartsWith(questionCommand)){
-                string questionText = input.Remove(0, questionCommand.Length);
+            if (message.StartsWith(questionCommand)){
+                string questionText = message.Remove(0, questionCommand.Length);
                 questionText = questionText.TrimStart(' ');
 
                 if (!String.IsNullOrWhiteSpace(questionText)){
                     IRecord newQuestion = _questionDataStore.CreateRecord(questionText);
-                    Console.WriteLine("Question has been created with ID " + 
+                    outputMessage ="Question has been created with ID " + 
                         newQuestion.Id + 
                         ". Question: " +
-                        newQuestion.Question);
-                }else{
-                    Console.WriteLine("This question appears to be blank, please retry.");
+                        newQuestion.Question;
+                    return outputMessage;
                 }
 
-            }else if (input.StartsWith(answerTag)){
+                outputMessage = "This question appears to be blank, please retry.";
+                return outputMessage;
+            }else if (message.StartsWith(answerTag)){
                 IRecord updatedRecord;
-                KeyValuePair<int,string> idWithAnswer = GetIdWithAnswer(input, answerTag);
+                KeyValuePair<int,string> idWithAnswer = GetIdWithAnswer(message, answerTag);
                 
                 if (_questionDataStore.TryUpdateRecord(idWithAnswer.Key, idWithAnswer.Value, out updatedRecord)){
-                    Console.WriteLine("Question ID " +
+                    outputMessage = "Question ID " +
                         updatedRecord.Id +
                         " has been updated with answer: " +
-                        updatedRecord.Answer);
-                }else{
-                    Console.WriteLine("Question ID " +
-                        idWithAnswer.Key +
-                        " either does not exist, or the answer is empty. Please try again.");
+                        updatedRecord.Answer;
+                    return outputMessage;
                 }
+
+                outputMessage = "Question ID " +
+                    idWithAnswer.Key +
+                    " either does not exist, or the answer is empty. Please try again.";
+                return outputMessage;
             }
+            return null;
         }
 
         private static KeyValuePair<int,string> GetIdWithAnswer(string fullAnswer, string ansTag){

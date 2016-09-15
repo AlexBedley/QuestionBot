@@ -50,10 +50,11 @@ namespace QuestionBot.UnitTests.Model{
             string statement = "Testing a string";
             IEnumerable<IRecord> recordList;
 
-            _testListener.ReceiveMessage(statement);
+            string output = _testListener.ReceiveMessage(statement);
             recordList = _storeTest.GetRecords();
 
             Assert.IsEmpty(recordList);
+            Assert.IsNull(output);
         }
 
         [Test]
