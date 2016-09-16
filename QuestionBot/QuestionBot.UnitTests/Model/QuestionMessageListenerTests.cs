@@ -4,25 +4,21 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using QuestionBot.Model;
 
-namespace QuestionBot.UnitTests.Model
-{
+namespace QuestionBot.UnitTests.Model{
 
     [TestFixture]
-    class QuestionMessageListenerTests
-    {
+    class QuestionMessageListenerTests{
         private IMessageListener _testListener;
         private IStore _storeTest;
 
         [SetUp]
-        public void Setup()
-        {
+        public void Setup(){
             _storeTest = new InMemoryStore();
             _testListener = new QuestionMessageListener(_storeTest);
         }
 
         [Test]
-        public void New_question_creates_record()
-        {
+        public void New_question_creates_record(){
             string question = "/question What is 1+2?";
             IEnumerable<IRecord> recordList;
             IRecord newRecord;
@@ -39,8 +35,7 @@ namespace QuestionBot.UnitTests.Model
         }
 
         [Test]
-        public void Blank_question_creates_no_record()
-        {
+        public void Blank_question_creates_no_record(){
             string question = "/question";
             IEnumerable<IRecord> recordList;
 
@@ -51,8 +46,7 @@ namespace QuestionBot.UnitTests.Model
         }
 
         [Test]
-        public void No_question_does_nothing()
-        {
+        public void No_question_does_nothing(){
             string statement = "Testing a string";
             string output = _testListener.ReceiveMessage(statement);
 
@@ -60,12 +54,27 @@ namespace QuestionBot.UnitTests.Model
         }
 
         [Test]
-        public void Null_input_does_nothing()
-        {
+        public void Null_input_does_nothing(){
             string nullInput=null;
             string output = _testListener.ReceiveMessage(nullInput);
 
             Assert.IsNull(output);
+        }
+
+        [Test]
+        public void Starting_and_trailing_whitespace_or_tab_is_removed_from_question() {
+            string questionSpaces = "/question    What is 1+2    ";
+            string questionSpacesStripped = "What is 1+2";
+            string questionTabs = "/question\tWhat is 1+2\t";
+            string questionTabsStripped = "What is 1+2";
+            IEnumerable<IRecord> recordList;
+
+            _testListener.ReceiveMessage(questionSpaces);
+            _testListener.ReceiveMessage(questionTabs);
+            recordList = _storeTest.GetRecords();
+
+            Assert.AreEqual(questionSpacesStripped,recordList.ElementAt(0).Question);
+            Assert.AreEqual(questionTabsStripped,recordList.ElementAt(1).Question);
         }
     }
 }

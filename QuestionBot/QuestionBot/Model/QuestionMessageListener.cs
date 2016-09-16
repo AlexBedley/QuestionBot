@@ -23,7 +23,8 @@ namespace QuestionBot.Model{
             }
 
             string questionText = message.Remove(0, QuestionCommand.Length);
-            questionText = questionText.TrimStart(' ');
+            questionText = questionText.TrimStart(' ','\u0009');
+            questionText = questionText.TrimEnd(' ', '\u0009');
 
             if (questionText.Equals(String.Empty)){
                 outputMessage = "This question appears to be blank, please retry.";
