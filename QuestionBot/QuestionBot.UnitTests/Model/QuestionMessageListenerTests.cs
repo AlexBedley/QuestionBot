@@ -62,19 +62,21 @@ namespace QuestionBot.UnitTests.Model{
         }
 
         [Test]
-        public void Starting_and_trailing_whitespace_or_tab_is_removed_from_question() {
+        public void Starting_and_trailing_whitespace_is_removed_from_question() {
             string questionSpaces = "/question    What is 1+2    ";
-            string questionSpacesStripped = "What is 1+2";
+            string questionStripped = "What is 1+2";
             string questionTabs = "/question\tWhat is 1+2\t";
-            string questionTabsStripped = "What is 1+2";
+            string questionNewLine = "/question\nWhat is 1+2\n";
             IEnumerable<IRecord> recordList;
 
             _testListener.ReceiveMessage(questionSpaces);
             _testListener.ReceiveMessage(questionTabs);
+            _testListener.ReceiveMessage(questionNewLine);
             recordList = _storeTest.GetRecords();
 
-            Assert.AreEqual(questionSpacesStripped,recordList.ElementAt(0).Question);
-            Assert.AreEqual(questionTabsStripped,recordList.ElementAt(1).Question);
+            Assert.AreEqual(questionStripped, recordList.ElementAt(0).Question);
+            Assert.AreEqual(questionStripped, recordList.ElementAt(1).Question);
+            Assert.AreEqual(questionStripped, recordList.ElementAt(2).Question);
         }
     }
 }
