@@ -17,10 +17,11 @@ namespace QuestionBot.UnitTests.Model{
         }
 
         [Test]
-        public void New_question_creates_record()
+        [TestCase("What is 1+2?")]
+        [TestCase("What was your /question again?")]
+        public void New_question_creates_record(string actualQuestion)
         {
-            const string actualQuestion = "What is 1+2?";
-            const string question = "/question " + actualQuestion;
+            string question = "/question " + actualQuestion;
             const int id = 15; 
 
             _storeTest.Setup(x => x.CreateRecord(actualQuestion)).Returns(new Record(id, actualQuestion, DateTime.Now));
