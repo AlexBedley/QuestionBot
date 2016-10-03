@@ -1,82 +1,74 @@
 ﻿using System;
-using System.Linq;
 using NUnit.Framework;
-using System.Collections.Generic;
 using QuestionBot.Model;
+using Moq;
 
 namespace QuestionBot.UnitTests.Model{
 
     [TestFixture]
     class QuestionMessageListenerTests{
         private IMessageListener _testListener;
-        private IStore _storeTest;
+        private Mock<IStore> _storeTest;
 
         [SetUp]
         public void Setup(){
-            _storeTest = new InMemoryStore();
-            _testListener = new QuestionMessageListener(_storeTest);
+            _storeTest = new Mock<IStore>(MockBehavior.Strict);
+            _testListener = new QuestionMessageListener(_storeTest.Object);
         }
 
         [Test]
-        public void New_question_creates_record(){
-            string question = "/question What is 1+2?";
-            IEnumerable<IRecord> recordList;
-            IRecord newRecord;
+        public void New_question_creates_record()
+        {
+            const string actualQuestion = "What is 1+2?";
+            const string question = "/question " + actualQuestion;
+            const int id = 15; 
 
-            _testListener.ReceiveMessage(question);
-            recordList = _storeTest.GetRecords();
-            newRecord = recordList.ElementAt(0);
+            _storeTest.Setup(x => x.CreateRecord(actualQuestion)).Returns(new Record(id, actualQuestion, DateTime.Now));
 
-            Assert.AreEqual(newRecord.Question, question.Substring(10));
-            Assert.AreNotEqual(newRecord.Id, default(int));
-            Assert.AreNotEqual(newRecord.TimeAsked, default(DateTime));
-            Assert.AreEqual(newRecord.Answer, default(string));
-            Assert.AreEqual(newRecord.TimeAnswered, default(DateTime));
+            string response = _testListener.ReceiveMessage(question);
+
+            Assert.AreEqual("Question has been created with ID " + id + ". Question: " + actualQuestion, response);
+            _storeTest.Verify(x => x.CreateRecord(actualQuestion), Times.Exactly(1));
         }
 
         [Test]
-        public void Blank_question_creates_no_record(){
-            string question = "/question";
-            IEnumerable<IRecord> recordList;
+        public void Blank_question_creates_no_record()
+        {
+            const string question = "/question";
 
-            _testListener.ReceiveMessage(question);
-            recordList = _storeTest.GetRecords();
+            string response = _testListener.ReceiveMessage(question);
 
-            Assert.IsEmpty(recordList);
+            Assert.AreEqual(QuestionMessageListener.ErrorMessage, response);
         }
 
         [Test]
-        public void No_question_does_nothing(){
-            string statement = "Testing a string";
-            string output = _testListener.ReceiveMessage(statement);
+        [TestCase (null)]
+        [TestCase("this doesn't start with /question")]
+        [TestCase("")]
+        public void Null_or_bad_input_does_nothing(string badInput)
+        {
+            string response = _testListener.ReceiveMessage(badInput);
 
-            Assert.IsNull(output);
+            Assert.IsNull(response);
         }
+
 
         [Test]
-        public void Null_input_does_nothing(){
-            string nullInput=null;
-            string output = _testListener.ReceiveMessage(nullInput);
+        [TestCase("    What is 1+2?    ", "What is 1+2?")]
+        [TestCase("\tWhat is 1+2\t", "What is 1+2?")]
+        [TestCase("\nWhat is 1+2\n", "What is 1+2?")]
+        public void Starting_and_trailing_whitespace_is_removed_from_question(string actualQuestion, string actualQuestionTrimmed)
+        {
+            string question = "/question " + actualQuestion;
+            const int id = 15;
 
-            Assert.IsNull(output);
+            _storeTest.Setup(x => x.CreateRecord(actualQuestionTrimmed)).Returns(new Record(id, actualQuestionTrimmed, DateTime.Now));
+
+            string response = _testListener.ReceiveMessage(question);
+
+            Assert.AreEqual("Question has been created with ID " + id + ". Question: " + actualQuestionTrimmed, response);
+            _storeTest.Verify(x => x.CreateRecord(actualQuestionTrimmed), Times.Exactly(1));
         }
 
-        [Test]
-        public void Starting_and_trailing_whitespace_is_removed_from_question() {
-            string questionSpaces = "/question    What is 1+2    ";
-            string questionStripped = "What is 1+2";
-            string questionTabs = "/question\tWhat is 1+2\t";
-            string questionNewLine = "/question\nWhat is 1+2\n";
-            IEnumerable<IRecord> recordList;
-
-            _testListener.ReceiveMessage(questionSpaces);
-            _testListener.ReceiveMessage(questionTabs);
-            _testListener.ReceiveMessage(questionNewLine);
-            recordList = _storeTest.GetRecords();
-
-            Assert.AreEqual(questionStripped, recordList.ElementAt(0).Question);
-            Assert.AreEqual(questionStripped, recordList.ElementAt(1).Question);
-            Assert.AreEqual(questionStripped, recordList.ElementAt(2).Question);
-        }
     }
 }

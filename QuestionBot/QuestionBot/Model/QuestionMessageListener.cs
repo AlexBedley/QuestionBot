@@ -8,6 +8,8 @@ namespace QuestionBot.Model{
 
     public class QuestionMessageListener : IMessageListener{
 
+        public const string ErrorMessage = "This question appears to be blank, please retry.";
+
         private IStore _questionDataStore;
         private const string QuestionCommand = "/question";
 
@@ -26,8 +28,7 @@ namespace QuestionBot.Model{
             questionText = questionText.Trim();
 
             if (questionText.Equals(String.Empty)){
-                outputMessage = "This question appears to be blank, please retry.";
-                return outputMessage;
+                return ErrorMessage;
             }
 
             IRecord newQuestion = _questionDataStore.CreateRecord(questionText);
