@@ -32,11 +32,11 @@ namespace QuestionBot.UnitTests.Model{
         }
 
         [Test]
-        public void Blank_question_creates_no_record()
+        [TestCase("/question")]
+        [TestCase("/question \n\t     ")]
+        public void Blank_question_creates_no_record(string emptyQuestion)
         {
-            const string question = "/question";
-
-            string response = _testListener.ReceiveMessage(question);
+            string response = _testListener.ReceiveMessage(emptyQuestion);
 
             Assert.AreEqual(QuestionMessageListener.ErrorMessage, response);
         }
@@ -45,6 +45,7 @@ namespace QuestionBot.UnitTests.Model{
         [TestCase (null)]
         [TestCase("this doesn't start with /question")]
         [TestCase("")]
+        [TestCase(" /question there is a space before /question")]
         public void Null_or_bad_input_does_nothing(string badInput)
         {
             string response = _testListener.ReceiveMessage(badInput);
