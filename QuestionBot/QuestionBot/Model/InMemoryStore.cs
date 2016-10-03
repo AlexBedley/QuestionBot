@@ -18,7 +18,7 @@ namespace QuestionBot.Model {
         }
 
         public bool TryUpdateRecord(int id, string answer, out IRecord recordToUpdate){
-            IEnumerable<IRecord> recordMatchingId = allRecords.Where(recordItem => recordItem.ID == id);
+            IEnumerable<IRecord> recordMatchingId = allRecords.Where(recordItem => recordItem.Id == id);
 
             if (recordMatchingId.Count() == 0){
                 recordToUpdate = null;
