@@ -23,7 +23,7 @@ namespace QuestionBot.UnitTests.Model {
 
             Assert.AreEqual(questionRecord.Question, question);
             Assert.AreNotEqual(questionRecord.TimeAsked, default(DateTime));
-            Assert.AreNotEqual(questionRecord.ID,default(int));
+            Assert.AreNotEqual(questionRecord.Id,default(int));
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace QuestionBot.UnitTests.Model {
             IEnumerable<IRecord> retrievedRecords;
 
             IRecord questionRecord = _storeTest.CreateRecord(question);
-            bool updatedRecord = _storeTest.TryUpdateRecord(questionRecord.ID, answer,out answerRecord);
+            bool updatedRecord = _storeTest.TryUpdateRecord(questionRecord.Id, answer,out answerRecord);
             retrievedRecords = _storeTest.GetRecords();
             IRecord myRecord = retrievedRecords.ElementAt(0);
 
@@ -43,13 +43,13 @@ namespace QuestionBot.UnitTests.Model {
             Assert.AreEqual(myRecord.Answer, answer);
             Assert.AreEqual(myRecord.TimeAsked, questionRecord.TimeAsked);
             Assert.AreEqual(myRecord.TimeAnswered, questionRecord.TimeAnswered);
-            Assert.AreEqual(myRecord.ID, questionRecord.ID);
+            Assert.AreEqual(myRecord.Id, questionRecord.Id);
 
             Assert.AreEqual(answerRecord.Question, question);
             Assert.AreEqual(answerRecord.Answer, answer);
             Assert.AreEqual(answerRecord.TimeAsked, questionRecord.TimeAsked);
             Assert.AreEqual(answerRecord.TimeAnswered, questionRecord.TimeAnswered);
-            Assert.AreEqual(answerRecord.ID, questionRecord.ID);
+            Assert.AreEqual(answerRecord.Id, questionRecord.Id);
         }
 
         [Test]
@@ -65,8 +65,8 @@ namespace QuestionBot.UnitTests.Model {
             IRecord record2 = _storeTest.CreateRecord(question2);
             IEnumerable<IRecord> questionRecords = new List<IRecord>{record1,record2};
 
-            _storeTest.TryUpdateRecord(record1.ID, answer1, out answerRecord);
-            _storeTest.TryUpdateRecord(record2.ID, answer2, out answerRecord);
+            _storeTest.TryUpdateRecord(record1.Id, answer1, out answerRecord);
+            _storeTest.TryUpdateRecord(record2.Id, answer2, out answerRecord);
 
             retrievedRecords = _storeTest.GetRecords();
 
@@ -92,22 +92,22 @@ namespace QuestionBot.UnitTests.Model {
             IRecord record1 = _storeTest.CreateRecord(question1);
             IRecord record2 = _storeTest.CreateRecord(question2);
 
-            bool emptyAnswerResult = _storeTest.TryUpdateRecord(record1.ID, answer1, out x);
-            bool nullAnswerResult = _storeTest.TryUpdateRecord(record2.ID, answer2, out x);
+            bool emptyAnswerResult = _storeTest.TryUpdateRecord(record1.Id, answer1, out x);
+            bool nullAnswerResult = _storeTest.TryUpdateRecord(record2.Id, answer2, out x);
 
             Assert.IsFalse(emptyAnswerResult);
             Assert.IsFalse(nullAnswerResult);
         }
 
         [Test]
-        public void Updating_record_with_nonexistant_ID_returns_false(){
+        public void Updating_record_with_nonexistant_Id_returns_false(){
             string question1 = "What is 1+2";
             string answer = "3";
             IRecord unusedRecord;
 
             IRecord myRecord = _storeTest.CreateRecord(question1);
 
-            bool badIdResult = _storeTest.TryUpdateRecord(myRecord.ID + 1, answer,out unusedRecord);
+            bool badIdResult = _storeTest.TryUpdateRecord(myRecord.Id + 1, answer,out unusedRecord);
 
             Assert.IsFalse(badIdResult);
         }
