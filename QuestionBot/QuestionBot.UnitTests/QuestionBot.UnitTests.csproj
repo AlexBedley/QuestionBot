@@ -46,6 +46,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\MessageEmitterTests.cs" />
     <Compile Include="Model\InMemoryStoreTests.cs" />
     <Compile Include="Model\QuestionMessageListenerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

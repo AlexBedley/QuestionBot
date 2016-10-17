@@ -41,9 +41,11 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\IMessageEmitter.cs" />
     <Compile Include="Model\IMessageListener.cs" />
     <Compile Include="Model\IRecord.cs" />
     <Compile Include="Model\IStore.cs" />
+    <Compile Include="Model\MessageEmitter.cs" />
     <Compile Include="Model\QuestionMessageListener.cs" />
     <Compile Include="Model\Record.cs" />
     <Compile Include="Model\InMemoryStore.cs" />
