@@ -5,7 +5,7 @@ using System.Linq;
 namespace QuestionBot.Model {
     public class MessageEmitter : IMessageEmitter {
         private string _lineInput = "";
-        public static IList<IMessageListener> Listeners = new List<IMessageListener>();
+        private static IList<IMessageListener> _listeners = new List<IMessageListener>();
 
         public void Start() {
             while( _lineInput != "/exitQuestionbot" ) {
@@ -15,12 +15,12 @@ namespace QuestionBot.Model {
         }
 
         public void Add( IMessageListener listener ) {
-            Listeners.Add( listener );
+            _listeners.Add( listener );
         }
 
         public static void NotifyAllListeners( string newInput ) {
-            for( int i = 0; i < Listeners.Count(); i++ ) {
-                Listeners[i].ReceiveMessage( newInput );
+            for( int i = 0; i < _listeners.Count(); i++ ) {
+                _listeners[i].ReceiveMessage( newInput );
             }
         }
     }
