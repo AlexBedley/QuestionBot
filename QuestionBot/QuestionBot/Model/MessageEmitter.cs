@@ -19,8 +19,8 @@ namespace QuestionBot.Model {
         }
 
         public static void NotifyAllListeners( string newInput ) {
-            for( int i = 0; i < _listeners.Count(); i++ ) {
-                _listeners[i].ReceiveMessage( newInput );
+            foreach (var listener in _listeners) {
+                listener.ReceiveMessage( newInput );
             }
         }
     }
