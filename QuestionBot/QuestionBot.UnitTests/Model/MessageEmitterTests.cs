@@ -31,5 +31,18 @@ namespace QuestionBot.UnitTests.Model {
 
             _testListener.Verify(x => x.ReceiveMessage(message), Times.Exactly(1));
         }
+
+        [Test]
+        public void Receiving_Message_With_No_Listeners_Will_Not_Call_ReceiveMessage() {
+            const string message = "/question What is 1+1?";
+            const string output = "Thank you";
+
+            _testListener.Setup(x => x.ReceiveMessage(message)).Returns(output);
+            _testConsole.Setup(x => x.ReadLine()).Returns(message);
+
+            _testEmitter.Start(_testConsole.Object);
+
+            _testListener.Verify(x => x.ReceiveMessage(message), Times.Never);
+        }
     }
 }
