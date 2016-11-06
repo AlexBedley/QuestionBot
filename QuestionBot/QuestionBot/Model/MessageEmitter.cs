@@ -7,20 +7,21 @@ namespace QuestionBot.Model {
         private string _lineInput = "";
         private static IList<IMessageListener> _listeners = new List<IMessageListener>();
 
-        public void Start() {
-            while( _lineInput != "/exitQuestionbot" ) {
-                _lineInput = Console.ReadLine();
-                NotifyAllListeners( _lineInput );
-            }
+        public void Start(IConsole messageConsole) {
+            _lineInput = messageConsole.ReadLine();
+            NotifyAllListeners(_lineInput, messageConsole);
         }
 
-        public void Add( IMessageListener listener ) {
-            _listeners.Add( listener );
+        public void Add(IMessageListener listener) {
+            _listeners.Add(listener);
         }
 
-        public static void NotifyAllListeners( string newInput ) {
+        public static void NotifyAllListeners(string newInput, IConsole outputConsole) {
+            string response;
+
             foreach (var listener in _listeners) {
-                listener.ReceiveMessage( newInput );
+                response = listener.ReceiveMessage(newInput);
+                outputConsole.WriteLine(response);
             }
         }
     }

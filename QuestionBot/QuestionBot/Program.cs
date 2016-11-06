@@ -5,10 +5,11 @@ namespace QuestionBot.Model {
         private static void Main( string[] args ) {
             IStore localStore = new InMemoryStore();
             IMessageListener questionListener = new QuestionMessageListener( localStore );
-
+            IConsole consoleWrapper = new ConsoleWrapper();
             IMessageEmitter emitter = new MessageEmitter();
+
             emitter.Add( questionListener );
-            emitter.Start();
+            emitter.Start( consoleWrapper );
         }
     }
 }
