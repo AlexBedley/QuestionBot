@@ -18,7 +18,7 @@ namespace QuestionBot.Model {
             }
         }
 
-        public static void NotifyAllListeners(string newInput, IConsole outputConsole) {
+        private static void NotifyAllListeners(string newInput, IConsole outputConsole) {
             string response;
 
             foreach (var listener in _listeners) {
