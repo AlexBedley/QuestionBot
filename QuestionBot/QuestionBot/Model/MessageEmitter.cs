@@ -4,12 +4,11 @@ using System.Linq;
 
 namespace QuestionBot.Model {
     public class MessageEmitter : IMessageEmitter {
-        private string _lineInput = "";
         private static readonly IList<IMessageListener> _listeners = new List<IMessageListener>();
 
         public void Start(IConsole messageConsole) {
-            _lineInput = messageConsole.ReadLine();
-            NotifyAllListeners(_lineInput, messageConsole);
+            string lineInput = messageConsole.ReadLine();
+            NotifyAllListeners(lineInput, messageConsole);
         }
 
         public void Add(IMessageListener listener) {
