@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace QuestionBot.Model {
     public class MessageEmitter : IMessageEmitter {
-        private static readonly IList<IMessageListener> _listeners = new List<IMessageListener>();
+        private readonly IList<IMessageListener> _listeners = new List<IMessageListener>();
 
         public void Start(IConsole messageConsole) {
             string lineInput = messageConsole.ReadLine();
@@ -17,7 +17,7 @@ namespace QuestionBot.Model {
             }
         }
 
-        private static void NotifyAllListeners(string newInput, IConsole outputConsole) {
+        private void NotifyAllListeners(string newInput, IConsole outputConsole) {
             string response;
 
             foreach (var listener in _listeners) {
