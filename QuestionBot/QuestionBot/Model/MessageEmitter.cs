@@ -7,12 +7,16 @@ namespace QuestionBot.Model {
         private readonly IList<IMessageListener> _listeners = new List<IMessageListener>();
 
         public void Start(IConsole messageConsole) {
-            string lineInput = messageConsole.ReadLine();
-            NotifyAllListeners(lineInput, messageConsole);
+            string lineInput = "";
+
+            while (lineInput != "/exitQuestionBot") {
+                lineInput = messageConsole.ReadLine();
+                NotifyAllListeners(lineInput, messageConsole);
+            }
         }
 
-        public void Add(IMessageListener listener) {
-            if (listener != null) {
+        public void Add(IMessageListener listener) {       
+            if(listener != null) {
                 _listeners.Add(listener);
             }
         }

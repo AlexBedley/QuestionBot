@@ -23,12 +23,15 @@ namespace QuestionBot.UnitTests.Model {
             const string message = "/question What is 1+1?";
             const string output = "Thank you";
 
-            _testConsole.Setup(x => x.ReadLine()).Returns(message);
+            _testConsole.SetupSequence( x => x.ReadLine() )
+                .Returns( message )
+                .Returns( "/exitQuestionBot" );
+
             _testListener.Setup(x => x.ReceiveMessage(message)).Returns(output);
+            _testListener.Setup(x => x.ReceiveMessage("/exitQuestionBot")).Returns(output);
 
             _testEmitter.Add(_testListener.Object);
             _testEmitter.Start(_testConsole.Object);
-
             _testListener.Verify(x => x.ReceiveMessage(message), Times.Exactly(1));
         }
 
@@ -37,8 +40,12 @@ namespace QuestionBot.UnitTests.Model {
             const string message = "/question What is 1+1?";
             const string output = "Thank you";
 
+            _testConsole.SetupSequence(x => x.ReadLine())
+                .Returns(message)
+                .Returns("/exitQuestionBot");
+
             _testListener.Setup(x => x.ReceiveMessage(message)).Returns(output);
-            _testConsole.Setup(x => x.ReadLine()).Returns(message);
+            _testListener.Setup(x => x.ReceiveMessage("/exitQuestionBot")).Returns(output);
 
             _testEmitter.Start(_testConsole.Object);
 
