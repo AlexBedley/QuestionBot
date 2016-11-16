@@ -32,7 +32,9 @@ namespace QuestionBot.UnitTests.Model {
             _testEmitter = new MessageEmitter( _testConsole.Object );
             _testEmitter.Add( _testListener.Object );
             _testEmitter.Start();
+
             _testListener.Verify( x => x.ReceiveMessage( message ), Times.Exactly( 1 ) );
+            _testConsole.Verify( x => x.WriteLine( output ), Times.Exactly( 1 ));
         }
 
         [Test]
