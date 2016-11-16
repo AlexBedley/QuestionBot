@@ -34,7 +34,7 @@ namespace QuestionBot.UnitTests.Model {
             _testEmitter.Start();
 
             _testListener.Verify( x => x.ReceiveMessage( message ), Times.Exactly( 1 ) );
-            _testConsole.Verify( x => x.WriteLine( output ), Times.Exactly( 1 ));
+            _testConsole.Verify( x => x.WriteLine( output ), Times.Exactly( 1 ) );
         }
 
         [Test]
@@ -57,6 +57,11 @@ namespace QuestionBot.UnitTests.Model {
 
         [Test]
         public void Adding_Null_Listener_Will_Not_Throw() {
+            const string message = "/question What is 1+1?";
+
+            _testConsole.Setup( x => x.ReadLine() ).Returns( message );
+            _testEmitter = new MessageEmitter( _testConsole.Object );
+
             Assert.DoesNotThrow( () => _testEmitter.Add( null ) );
         }
     }
