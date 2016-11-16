@@ -51,5 +51,10 @@ namespace QuestionBot.UnitTests.Model {
 
             _testListener.Verify(x => x.ReceiveMessage(message), Times.Never);
         }
+
+        [Test]
+        public void Adding_Null_Listener_Will_Not_Throw() {
+            Assert.DoesNotThrow(() => _testEmitter.Add(null));
+        }
     }
 }
