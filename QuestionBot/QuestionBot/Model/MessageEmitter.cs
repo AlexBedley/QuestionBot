@@ -15,7 +15,10 @@ namespace QuestionBot.Model {
 
             while (lineInput != "/exitQuestionBot") {
                 lineInput = _messageConsole.ReadLine();
-                NotifyAllListeners(lineInput);
+
+                if ( lineInput != "/exitQuestionBot" ) {
+                    NotifyAllListeners( lineInput );
+                }
             }
         }
 
