@@ -4,14 +4,18 @@ using System.Linq;
 
 namespace QuestionBot.Model {
     public class MessageEmitter : IMessageEmitter {
+        private IConsole _messageConsole;
         private readonly IList<IMessageListener> _listeners = new List<IMessageListener>();
 
-        public void Start(IConsole messageConsole) {
+        public MessageEmitter( IConsole messageConsole) {
+            _messageConsole = messageConsole;
+        }
+        public void Start() {
             string lineInput = "";
 
             while (lineInput != "/exitQuestionBot") {
-                lineInput = messageConsole.ReadLine();
-                NotifyAllListeners(lineInput, messageConsole);
+                lineInput = _messageConsole.ReadLine();
+                NotifyAllListeners(lineInput);
             }
         }
 
@@ -21,12 +25,12 @@ namespace QuestionBot.Model {
             }
         }
 
-        private void NotifyAllListeners(string newInput, IConsole outputConsole) {
+        private void NotifyAllListeners(string newInput) {
             string response;
 
             foreach (var listener in _listeners) {
                 response = listener.ReceiveMessage(newInput);
-                outputConsole.WriteLine(response);
+                _messageConsole.WriteLine(response);
             }
         }
     }

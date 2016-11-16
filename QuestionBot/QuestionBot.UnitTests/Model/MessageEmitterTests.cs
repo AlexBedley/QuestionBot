@@ -13,8 +13,7 @@ namespace QuestionBot.UnitTests.Model {
 
         [SetUp]
         public void Setup() {
-            _testEmitter = new MessageEmitter();
-            _testListener = new Mock<IMessageListener>(MockBehavior.Strict);
+            _testListener = new Mock<IMessageListener>( MockBehavior.Strict );
             _testConsole = new Mock<IConsole>();
         }
 
@@ -27,12 +26,13 @@ namespace QuestionBot.UnitTests.Model {
                 .Returns( message )
                 .Returns( "/exitQuestionBot" );
 
-            _testListener.Setup(x => x.ReceiveMessage(message)).Returns(output);
-            _testListener.Setup(x => x.ReceiveMessage("/exitQuestionBot")).Returns(output);
+            _testListener.Setup( x => x.ReceiveMessage( message ) ).Returns( output );
+            _testListener.Setup( x => x.ReceiveMessage( "/exitQuestionBot" ) ).Returns( output );
 
-            _testEmitter.Add(_testListener.Object);
-            _testEmitter.Start(_testConsole.Object);
-            _testListener.Verify(x => x.ReceiveMessage(message), Times.Exactly(1));
+            _testEmitter = new MessageEmitter( _testConsole.Object );
+            _testEmitter.Add( _testListener.Object );
+            _testEmitter.Start();
+            _testListener.Verify( x => x.ReceiveMessage( message ), Times.Exactly( 1 ) );
         }
 
         [Test]
@@ -40,21 +40,22 @@ namespace QuestionBot.UnitTests.Model {
             const string message = "/question What is 1+1?";
             const string output = "Thank you";
 
-            _testConsole.SetupSequence(x => x.ReadLine())
-                .Returns(message)
-                .Returns("/exitQuestionBot");
+            _testConsole.SetupSequence( x => x.ReadLine() )
+                .Returns( message )
+                .Returns( "/exitQuestionBot" );
 
-            _testListener.Setup(x => x.ReceiveMessage(message)).Returns(output);
-            _testListener.Setup(x => x.ReceiveMessage("/exitQuestionBot")).Returns(output);
+            _testListener.Setup( x => x.ReceiveMessage( message ) ).Returns( output );
+            _testListener.Setup( x => x.ReceiveMessage( "/exitQuestionBot" ) ).Returns( output );
 
-            _testEmitter.Start(_testConsole.Object);
+            _testEmitter = new MessageEmitter( _testConsole.Object );
+            _testEmitter.Start();
 
-            _testListener.Verify(x => x.ReceiveMessage(message), Times.Never);
+            _testListener.Verify( x => x.ReceiveMessage( message ), Times.Never );
         }
 
         [Test]
         public void Adding_Null_Listener_Will_Not_Throw() {
-            Assert.DoesNotThrow(() => _testEmitter.Add(null));
+            Assert.DoesNotThrow( () => _testEmitter.Add( null ) );
         }
     }
 }
