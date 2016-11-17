@@ -12,12 +12,13 @@ namespace QuestionBot.Model {
             _listeners = new List<IMessageListener>();
         }
         public void Start() {
+            const string exitCommand = "/exitQuestionBot";
             string lineInput = "";
 
-            while (lineInput != "/exitQuestionBot") {
+            while (lineInput != exitCommand) {
                 lineInput = _messageConsole.ReadLine();
 
-                if ( lineInput != "/exitQuestionBot" ) {
+                if ( lineInput != exitCommand) {
                     NotifyAllListeners( lineInput );
                 }
             }
