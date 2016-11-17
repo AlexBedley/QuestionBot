@@ -17,10 +17,7 @@ namespace QuestionBot.Model {
 
             while (lineInput != exitCommand) {
                 lineInput = _messageConsole.ReadLine();
-
-                if ( lineInput != exitCommand) {
-                    NotifyAllListeners( lineInput );
-                }
+                NotifyAllListeners( lineInput );
             }
         }
 
