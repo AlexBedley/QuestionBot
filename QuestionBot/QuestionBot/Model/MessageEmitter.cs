@@ -28,10 +28,8 @@ namespace QuestionBot.Model {
         }
 
         private void NotifyAllListeners(string newInput) {
-            string response;
-
             foreach (var listener in _listeners) {
-                response = listener.ReceiveMessage(newInput);
+                string response = listener.ReceiveMessage(newInput);
                 _messageConsole.WriteLine(response);
             }
         }
