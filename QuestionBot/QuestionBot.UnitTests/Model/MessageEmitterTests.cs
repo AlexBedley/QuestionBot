@@ -10,11 +10,14 @@ namespace QuestionBot.UnitTests.Model {
         private MessageEmitter _testEmitter;
         private Mock<IMessageListener> _testListener;
         private Mock<IConsole> _testConsole;
+        private string _exitCommand;
+
 
         [SetUp]
         public void Setup() {
             _testListener = new Mock<IMessageListener>( MockBehavior.Strict );
             _testConsole = new Mock<IConsole>();
+            _exitCommand = "/exitQuestionBot";
         }
 
         [Test]
@@ -22,21 +25,21 @@ namespace QuestionBot.UnitTests.Model {
             const string message = "/question What is 1+1?";
             const string output = "Thank you";
             const string nullOutput = null;
-            const string exitCommand = "/exitQuestionBot";
+
 
             _testConsole.SetupSequence( x => x.ReadLine() )
                 .Returns( message )
-                .Returns( "/exitQuestionBot" );
+                .Returns( _exitCommand );
 
             _testListener.Setup( x => x.ReceiveMessage( message ) ).Returns( output );
-            _testListener.Setup( x => x.ReceiveMessage( exitCommand ) ).Returns( nullOutput );
+            _testListener.Setup( x => x.ReceiveMessage( _exitCommand ) ).Returns( nullOutput );
 
             _testEmitter = new MessageEmitter( _testConsole.Object );
             _testEmitter.Add( _testListener.Object );
             _testEmitter.Start();
 
             _testListener.Verify( x => x.ReceiveMessage( message ), Times.Exactly( 1 ) );
-            _testListener.Verify( x => x.ReceiveMessage( exitCommand ), Times.Exactly( 1 ) );
+            _testListener.Verify( x => x.ReceiveMessage( _exitCommand ), Times.Exactly( 1 ) );
             _testConsole.Verify( x => x.WriteLine( output ), Times.Exactly( 1 ) );
         }
 
@@ -47,7 +50,7 @@ namespace QuestionBot.UnitTests.Model {
 
             _testConsole.SetupSequence( x => x.ReadLine() )
                 .Returns( message )
-                .Returns( "/exitQuestionBot" );
+                .Returns( _exitCommand );
 
             _testListener.Setup( x => x.ReceiveMessage( message ) ).Returns( output );
 
@@ -61,10 +64,14 @@ namespace QuestionBot.UnitTests.Model {
         public void Adding_Null_Listener_Will_Not_Throw() {
             const string message = "/question What is 1+1?";
 
-            _testConsole.Setup( x => x.ReadLine() ).Returns( message );
-            _testEmitter = new MessageEmitter( _testConsole.Object );
+            _testConsole.SetupSequence( x => x.ReadLine() )
+                .Returns( message )
+                .Returns( _exitCommand );
 
-            Assert.DoesNotThrow( () => _testEmitter.Add( null ) );
+            _testEmitter = new MessageEmitter( _testConsole.Object );
+            _testEmitter.Add( null );
+
+            Assert.DoesNotThrow( () => _testEmitter.Start() );
         }
     }
 }
