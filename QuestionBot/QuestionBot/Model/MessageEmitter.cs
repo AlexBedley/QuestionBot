@@ -5,10 +5,11 @@ using System.Linq;
 namespace QuestionBot.Model {
     public class MessageEmitter : IMessageEmitter {
         private IConsole _messageConsole;
-        private readonly IList<IMessageListener> _listeners = new List<IMessageListener>();
+        private readonly IList<IMessageListener> _listeners;
 
         public MessageEmitter( IConsole messageConsole) {
             _messageConsole = messageConsole;
+            _listeners = new List<IMessageListener>();
         }
         public void Start() {
             string lineInput = "";
