@@ -23,9 +23,9 @@ namespace QuestionBot.Model {
         }
 
         public void Add( IMessageListener listener ) {
-            if( listener != null ) {
+          //  if( listener != null ) {
                 _listeners.Add( listener );
-            }
+         //   }
         }
 
         private void NotifyAllListeners( string newInput ) {
