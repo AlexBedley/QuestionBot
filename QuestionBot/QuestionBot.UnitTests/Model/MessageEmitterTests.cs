@@ -38,7 +38,7 @@ namespace QuestionBot.UnitTests.Model {
             _testListener.Verify( x => x.ReceiveMessage( Message ), Times.Exactly( 1 ) );
             _testListener.Verify( x => x.ReceiveMessage( ExitCommand ), Times.Exactly( 1 ) );
             _testConsole.Verify( x => x.WriteLine( Output ), Times.Exactly( 1 ) );
-            _testConsole.Verify( x => x.WriteLine( nullOutput ), Times.Exactly( 1 ) );
+            _testConsole.Verify( x => x.WriteLine( nullOutput ), Times.Never );
         }
 
         [Test]
@@ -47,12 +47,8 @@ namespace QuestionBot.UnitTests.Model {
                 .Returns( Message )
                 .Returns( ExitCommand );
 
-            _testListener.Setup( x => x.ReceiveMessage( Message ) ).Returns( Output );
-
             _testEmitter = new MessageEmitter( _testConsole.Object );
             _testEmitter.Start();
-
-            _testListener.Verify( x => x.ReceiveMessage( Message ), Times.Never );
         }
 
         [Test]
