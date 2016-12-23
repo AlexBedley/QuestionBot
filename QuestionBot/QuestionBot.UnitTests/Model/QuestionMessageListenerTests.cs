@@ -57,8 +57,8 @@ namespace QuestionBot.UnitTests.Model{
 
         [Test]
         [TestCase("    What is 1+2?    ", "What is 1+2?")]
-        [TestCase("\tWhat is 1+2\t", "What is 1+2?")]
-        [TestCase("\nWhat is 1+2\n", "What is 1+2?")]
+        [TestCase("\tWhat is 1+2?\t", "What is 1+2?")]
+        [TestCase("\nWhat is 1+2?\n", "What is 1+2?")]
         public void Starting_and_trailing_whitespace_is_removed_from_question(string actualQuestion, string actualQuestionTrimmed)
         {
             string question = "/question " + actualQuestion;
