@@ -46,9 +46,11 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\AnswerMessageListenerTests.cs" />
     <Compile Include="Model\MessageEmitterTests.cs" />
     <Compile Include="Model\InMemoryStoreTests.cs" />
     <Compile Include="Model\QuestionMessageListenerTests.cs" />
+    <Compile Include="MoqExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace QuestionBot.Model {
-    class AnswerMessageListener : IMessageListener {
+    public class AnswerMessageListener : IMessageListener {
         private const string AnswerCommand = "/answer";
         public const string ErrorMessage = "This answer or ID appears to be blank, please retry.";
         private IStore _answerDataStore;
@@ -16,7 +13,6 @@ namespace QuestionBot.Model {
         }
 
         public string ReceiveMessage( string message ) {
-            string words = "a";
             IRecord questionRecord;
             int id;
 
@@ -25,19 +21,32 @@ namespace QuestionBot.Model {
             }
 
             string idWithAnswerText = message.Remove( 0, AnswerCommand.Length );
-            string[] splitIdWithAnswer = idWithAnswerText.Split( null );
+            idWithAnswerText = idWithAnswerText.Trim();
 
-            if ( splitIdWithAnswer.Count() < 2 ) {
+            Regex regexPattern = new Regex( @"(\d+)\s.*" );
+            Match matches = regexPattern.Match( idWithAnswerText );
+
+            if ( !matches.Success ) {
                 return ErrorMessage;
             }
 
-            Int32.TryParse( splitIdWithAnswer[0], out id );
-            string answer = splitIdWithAnswer[1];
+            Int32.TryParse(matches.Groups[1].ToString(), out id);
+            string answerText = idWithAnswerText.Remove( 0, matches.Groups[1].ToString().Length ).Trim();
 
-            _answerDataStore.TryUpdateRecord( id, answer, out questionRecord );
-            outputMessage = "Question with ID " + id + " has been updated with your answer: " +
-                            answer;
-            return "";
+            if ( answerText.Equals( String.Empty ) || id == 0 ) {
+                return ErrorMessage;
+            }
+
+            bool successfulUpdate = _answerDataStore.TryUpdateRecord( id, answerText, out questionRecord );
+
+            if ( !successfulUpdate ) {
+                return ErrorMessage;
+            }
+
+            string outputMessage = "Question with ID <" + id + "> has been updated with your answer: " +
+                                   answerText;
+
+            return outputMessage;
         }
     }
 }
